@@ -1,4 +1,24 @@
-## Unreleased
+<!-- ## Unreleased -->
+
+## Version 0.9.0 - 2026-05-16
+
+- Introduce the log reporter and add colour to the output by default (or pass `--no-colour` to disable). Pass `--reporter log` to the build) Supported reporters are `log` (one line per visited route), `null` (only errors), and `progress` (dots). <https://github.com/benpickles/parklife/pull/138>
+
+- Add inter-build caching via support HTTP ETags. <https://github.com/benpickles/parklife/pull/138>
+
+  Parklife now saves build metadata (in the file `BUILD_DIR/.parklife/build.yml`) which is used to support HTTP caching via ETags (it can be skipped by setting the config `skip_build_meta = false` or using `--skip-build-meta` via the CLI). ETag generation and the actual cache hit/miss responsibility rests on the app itself but hopefully your framework can help with this (certainly Rails has lots of HTTP caching helpers). Tell Parklife to use a previous build as a cache source at build time with `parklife build --cache-dir build`.
+
+- Introduce response handlers and make it possible for them to be customised without having to resort to monkeypatching. <https://github.com/benpickles/parklife/pull/136>
+
+- Only store a text/html response as an .html file <https://github.com/benpickles/parklife/pull/136>
+
+  Prior to this change all responses were expected to be HTML unless the request path included a file extension which led to the following issue:
+
+  The path `/dry-types/v1.8` would be detected as having a file extension (`.8`) and create the _file_ `dry-types/v1.8`, then the path `/dry-types/v1.8/something-else` would attempt to create the file `dry-types/v1.8/something-else.html` but encounter a `Errno::EEXIST` when it attempted to create the _directory_ `dry-types/v1.8`.
+
+  With this change a response is only saved as HTML when its content type is `text/html`. This fixes the above case and should mean that files in the final build and how they're treated by a static server is better aligned with how they're used in the dynamic development environment.
+
+- Fix including a 404 response in the build when `on_404` was `:skip` or `:warn`. <https://github.com/benpickles/parklife/pull/135>
 
 ## Version 0.8.1 - 2025-12-21
 
