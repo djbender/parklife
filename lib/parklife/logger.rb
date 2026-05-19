@@ -7,16 +7,19 @@ module Parklife
     extend Forwardable
 
     attr_accessor :no_colour
-    attr_reader :stderr, :stdout
 
-    def initialize(stdout = $stdout, stderr = $stderr, no_colour: false)
+    def initialize(stdout = nil, stderr = nil, no_colour: false)
       @stdout = stdout
       @stderr = stderr
       @no_colour = no_colour
       @thor_color = Thor::Shell::Color.new
     end
 
-    def_delegators :@stdout, :print, :puts
+    def stderr = @stderr || $stderr
+    def stdout = @stdout || $stdout
+
+    def print(*args) = stdout.print(*args)
+    def puts(*args) = stdout.puts(*args)
 
     def colour(string, *colours)
       no_colour ? string : @thor_color.set_color(string, *colours)

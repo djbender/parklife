@@ -30,4 +30,11 @@ RSpec.describe Parklife::Logger do
       end
     end
   end
+
+  describe '#warn' do
+    it 'writes a coloured message to stderr' do
+      subject.warn('error')
+      expect(stderr.string).to include('error')
+    end
+  end
 end

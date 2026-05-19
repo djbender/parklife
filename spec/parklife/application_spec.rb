@@ -200,6 +200,20 @@ RSpec.describe Parklife::Application do
         end
       end
     end
+
+    context 'when cache_dir and build_dir are different paths' do
+      let(:app) { Proc.new { [200, {}, ['200']] } }
+      let(:build_dir) { File.join(tmpdir, 'build') }
+      let(:cache_dir) { File.join(tmpdir, 'cache') }
+
+      it 'uses the cache without moving directories' do
+        config.cache_dir = cache_dir
+        subject.routes.root crawl: true
+        subject.build
+
+        expect(build_files).to contain_exactly('.parklife/build.yml', 'index.html')
+      end
+    end
   end
 
   describe '#load_Parkfile' do

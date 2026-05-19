@@ -63,4 +63,22 @@ RSpec.describe Parklife::Config do
       end
     end
   end
+
+  describe '#reporter=' do
+    let(:config) { described_class.new }
+
+    context 'with "log"' do
+      it 'sets a Log reporter' do
+        config.reporter = 'log'
+        expect(config.reporter).to be_a(Parklife::Reporter::Log)
+      end
+    end
+
+    context 'with "progress"' do
+      it 'sets a Progress reporter' do
+        config.reporter = 'progress'
+        expect(config.reporter).to be_a(Parklife::Reporter::Progress)
+      end
+    end
+  end
 end
