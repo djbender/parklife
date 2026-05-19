@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.summary       = 'Convert a Rack app into a static HTML site.'
   spec.homepage      = 'https://parklife.dev'
   spec.license       = 'MIT'
-  spec.required_ruby_version = '>= 2.5.0'
+  spec.required_ruby_version = '>= 3.0.0'
 
   spec.metadata['changelog_uri'] = 'https://github.com/benpickles/parklife/blob/main/CHANGELOG.md'
   spec.metadata['homepage_uri'] = spec.homepage
